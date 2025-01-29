@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Appointment - Mindsphere</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #000000, #c00101);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .navbar {
+      position: absolute;
+      top: 10px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 20px;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-button {
+      background-color: #c20303;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      border: none;
+      transition: background-color 0.3s;
+    }
+
+    .dropdown-button:hover {
+      background-color: #a00101;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #333;
+      min-width: 200px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      z-index: 1;
+      flex-direction: column;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: flex;
+    }
+
+    .dropdown-content a {
+      padding: 12px 16px;
+      color: white;
+      text-decoration: none;
+      display: block;
+      transition: background-color 0.3s;
+      border-radius: 10px;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #444;
+    }
+
+    .appointment-container {
+      width: 100%;
+      max-width: 600px;
+      background-color: #a59696;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    h2 {
+      text-align: center;
+      color: #fff;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .appointment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    input[type="date"],
+    input[type="time"] {
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    select {
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #c20303;
+      color: white;
+      border: none;
+      padding: 18px 25px;
+      font-size: 16px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
+
+    button:hover {
+      background-color: #a00101;
+    }
+
+    .feedback-message {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="dropdown">
+      <button class="dropdown-button">Menu</button>
+      <div class="dropdown-content">
+        <a href="#">Home</a>
+        <a href="#">Exercises</a>
+        <a href="#">Mood Tracker</a>
+        <a href="#">Progress</a>
+        <a href="#">Connect</a>
+      </div>
+    </div>
+    <div>
+      <button>Book Appointment</button>
+      <button>Emergency Contact</button>
+      <button>Profile</button>
+    </div>
+  </div>
+
+  <!-- Appointment Booking Container -->
+  <div class="appointment-container">
+    <h2>Book Your Appointment</h2>
+    <form class="appointment-form" id="appointmentForm">
+      <label for="doctor">Choose a Therapist:</label>
+      <select id="doctor" name="doctor" required>
+        <option value="therapist1">Therapist 1</option>
+        <option value="therapist2">Therapist 2</option>
+        <option value="therapist3">Therapist 3</option>
+      </select>
+
+      <label for="appointmentDate">Select Date:</label>
+      <input type="date" id="appointmentDate" name="appointmentDate" required>
+
+      <label for="appointmentTime">Select Time:</label>
+      <input type="time" id="appointmentTime" name="appointmentTime" required>
+
+      <button type="submit">Book Appointment</button>
+    </form>
+
+    <div id="feedbackMessage" class="feedback-message"></div>
+  </div>
+
+  <script>
+    const appointmentForm = document.getElementById('appointmentForm');
+    const feedbackMessage = document.getElementById('feedbackMessage');
+
+    appointmentForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const doctor = document.getElementById('doctor').value;
+      const appointmentDate = document.getElementById('appointmentDate').value;
+      const appointmentTime = document.getElementById('appointmentTime').value;
+
+      if (!doctor || !appointmentDate || !appointmentTime) {
+        feedbackMessage.textContent = 'Please fill in all fields.';
+        feedbackMessage.style.color = 'red';
+        return;
+      }
+
+      const appointmentData = {
+        doctor: doctor,
+        appointmentDate: appointmentDate,
+        appointmentTime: appointmentTime
+      };
+
+      // Send the appointment data to the backend (Flask API)
+      try {
+        const response = await fetch("http://127.0.0.1:5000/book-appointment", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(appointmentData)
+        });
+
+        if (response.ok) {
+          feedbackMessage.textContent = 'Your appointment has been booked successfully!';
+          feedbackMessage.style.color = 'green';
+        } else {
+          feedbackMessage.textContent = 'Sorry, something went wrong. Please try again.';
+          feedbackMessage.style.color = 'red';
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        feedbackMessage.textContent = 'An error occurred. Please try again.';
+        feedbackMessage.style.color = 'red';
+      }
+    });
+  </script>
+
+</body>
+
+</html>

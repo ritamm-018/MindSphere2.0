@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindfulness Exercises</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link your stylesheet if needed -->
+</head>
+<body>
+    <!-- Main Navigation Menu -->
+    <div class="navbar">
+        <div class="dropdown">
+            <button class="dropdown-button">Menu</button>
+            <div class="dropdown-content">
+                <a href="index.html">Home</a>
+                <a href="profile.html">Profile</a>
+                <a href="mood-tracker.html">Mood Tracker</a>
+                <a href="progress-tracker.html">Progress Tracker</a>
+                <a href="connect.html">Connect</a>
+                <a href="book-appointment.html">Book Appointment</a>
+                <a href="emergency-contact.html">Emergency Contacts</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exercises Section -->
+    <div class="exercises">
+        <h2>Mindfulness Exercises</h2>
+
+        <div class="exercise">
+            <h3>Breathing Exercise</h3>
+            <p>This exercise helps reduce anxiety and stress by focusing on controlled breathing.</p>
+            <button id="breathingExerciseBtn">Start Breathing Exercise</button>
+        </div>
+
+        <div class="exercise">
+            <h3>Guided Meditation</h3>
+            <p>A guided session to help you relax and clear your mind. Perfect for reducing stress.</p>
+            <button id="meditationBtn">Start Guided Meditation</button>
+        </div>
+
+        <div class="exercise">
+            <h3>Yoga Routine</h3>
+            <p>Follow a relaxing yoga routine designed to ease tension and improve focus.</p>
+            <button id="yogaBtn">Start Yoga Routine</button>
+        </div>
+    </div>
+
+    <script>
+        // Example JavaScript for starting the exercises
+        document.getElementById("breathingExerciseBtn").addEventListener("click", function() {
+            alert("Starting Breathing Exercise...");
+            // Here, you could integrate a timer or video for the exercise
+        });
+
+        document.getElementById("meditationBtn").addEventListener("click", function() {
+            alert("Starting Guided Meditation...");
+            // You could embed a meditation video or play an audio file here
+        });
+
+        document.getElementById("yogaBtn").addEventListener("click", function() {
+            alert("Starting Yoga Routine...");
+            // Similarly, link to a yoga video or provide instructions here
+        });
+    </script>
+</body>
+</html>

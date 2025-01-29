@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Tracker</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link your stylesheet if needed -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js for charts -->
+</head>
+<body>
+    <!-- Main Navigation Menu -->
+    <div class="navbar">
+        <div class="dropdown">
+            <button class="dropdown-button">Menu</button>
+            <div class="dropdown-content">
+                <a href="index.html">Home</a>
+                <a href="profile.html">Profile</a>
+                <a href="exercises.html">Exercises</a>
+                <a href="progress-tracker.html">Progress Tracker</a>
+                <a href="connect.html">Connect</a>
+                <a href="book-appointment.html">Book Appointment</a>
+                <a href="emergency-contact.html">Emergency Contacts</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mood Tracker Form -->
+    <div class="mood-tracker">
+        <h2>Track Your Mood</h2>
+        <form id="moodForm">
+            <label for="moodRating">Rate your mood today (1-10):</label>
+            <input type="number" id="moodRating" name="moodRating" min="1" max="10" required>
+
+            <label for="moodNotes">Notes (optional):</label>
+            <textarea id="moodNotes" name="moodNotes" rows="4" placeholder="Write something about your mood..."></textarea>
+
+            <button type="submit">Submit Mood</button>
+        </form>
+
+        <div id="feedbackMessage"></div>
+    </div>
+
+    <!-- Mood History and Chart -->
+    <div class="mood-history">
+        <h3>Your Mood History</h3>
+        <div id="moodHistory"></div>
+        <canvas id="moodChart" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        // Handle mood form submission
+        const moodForm = document.getElementById('moodForm');
+        const moodRatingInput = document.getElementById('moodRating');
+        const moodNotesInput = document.getElementById('moodNotes');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+
+        moodForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const moodRating = moodRatingInput.value;
+            const moodNotes = moodNotesInput.value;
+
+            if (!moodRating || moodRating < 1 || moodRating > 10) {
+                feedbackMessage.textContent = "Please provide a mood rating between 1 and 10.";
+                return;
+            }
+
+            // Send data to backend (use your backend URL here)
+            // For now, we are simulating success
+            feedbackMessage.textContent = "Your mood has been saved!";
+            feedbackMessage.style.color = "green";
+
+            // Optionally, you can update the mood history chart or history section here.
+            // Simulating adding a new mood entry:
+            addMoodToHistory(moodRating, moodNotes);
+        });
+
+        // Sample mood history data (in a real app, this would come from your backend)
+        const moodHistory = [
+            { date: '2025-01-25', mood: 7, notes: 'Feeling okay today.' },
+            { date: '2025-01-26', mood: 6, notes: 'A little stressed.' },
+            { date: '2025-01-27', mood: 8, notes: 'Feeling positive!' }
+        ];
+
+        function loadMoodHistory() {
+            const historyContainer = document.getElementById('moodHistory');
+            historyContainer.innerHTML = '';
+
+            if (moodHistory.length === 0) {
+                historyContainer.innerHTML = "No mood history available.";
+            } else {
+                moodHistory.forEach(entry => {
+                    const entryDiv = document.createElement('div');
+                    entryDiv.classList.add('mood-entry');
+                    entryDiv.innerHTML = `<p>${entry.date}: Mood: ${entry.mood}/10</p><p>Notes: ${entry.notes}</p>`;
+                    historyContainer.appendChild(entryDiv);
+                });
+
+                // Update the chart
+                updateMoodChart();
+            }
+        }
+
+        function addMoodToHistory(mood, notes) {
+            const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+            moodHistory.push({ date: currentDate, mood: parseInt(mood), notes: notes });
+            loadMoodHistory(); // Refresh history display
+        }
+
+        // Function to update mood chart (using Chart.js)
+        let moodChart = null;
+
+        function updateMoodChart() {
+            const ctx = document.getElementById('moodChart').getContext('2d');
+
+            const dates = moodHistory.map(entry => entry.date);
+            const moods = moodHistory.map(entry => entry.mood);
+
+            if (moodChart) {
+                moodChart.destroy(); // Destroy the previous chart before creating a new one
+            }
+
+            moodChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Mood Progress',
+                        data: moods,
+                        borderColor: '#c20303',
+                        fill: false,
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: { title: { display: true, text: 'Date' } },
+                        y: { title: { display: true, text: 'Mood' }, min: 1, max: 10 },
+                    }
+                }
+            });
+        }
+
+        loadMoodHistory(); // Load mood history when the page loads
+    </script>
+</body>
+</html>

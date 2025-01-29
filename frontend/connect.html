@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect - Therapist & Peer Groups</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <!-- Main Navigation Menu -->
+    <div class="navbar">
+        <div class="dropdown">
+            <button class="dropdown-button">Menu</button>
+            <div class="dropdown-content">
+                <a href="index.html">Home</a>
+                <a href="profile.html">Profile</a>
+                <a href="exercises.html">Exercises</a>
+                <a href="mood-tracker.html">Mood Tracker</a>
+                <a href="progress-tracker.html">Progress Tracker</a>
+                <a href="book-appointment.html">Book Appointment</a>
+                <a href="emergency-contact.html">Emergency Contacts</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Therapist Communication Section -->
+    <div class="therapist-chat">
+        <h2>Connect with Your Therapist</h2>
+        <p>If you need support, connect with your therapist for a chat or video call:</p>
+        <button class="chat-button">Start Chat</button>
+        <button class="video-call-button">Start Video Call</button>
+    </div>
+
+    <!-- Peer Group Communication Section -->
+    <div class="peer-group">
+        <h3>Join Peer Group Meetings</h3>
+        <p>Join a virtual peer group meeting for emotional and social support:</p>
+        <button class="join-peer-group-button">Join Peer Group</button>
+
+        <h3>Available Peer Group Meetings</h3>
+        <div id="peerGroupsList">
+            <!-- List of available peer groups will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        // Handle Therapist Chat and Video Call Buttons
+        document.querySelector('.chat-button').addEventListener('click', function() {
+            alert('Starting chat with your therapist...');
+            // Implement your chat functionality here
+        });
+
+        document.querySelector('.video-call-button').addEventListener('click', function() {
+            alert('Starting video call with your therapist...');
+            // Implement your video call functionality here
+        });
+
+        // Sample data for available peer group meetings
+        const peerGroups = [
+            { name: 'Mental Health Support Group', time: '2025-01-30 18:00', link: '#' },
+            { name: 'Stress Relief Group', time: '2025-02-01 14:00', link: '#' }
+        ];
+
+        function loadPeerGroups() {
+            const peerGroupsList = document.getElementById('peerGroupsList');
+            peerGroupsList.innerHTML = ''; // Clear the list first
+
+            peerGroups.forEach(group => {
+                const groupItem = document.createElement('div');
+                groupItem.classList.add('peer-group-item');
+                groupItem.innerHTML = `<p><strong>${group.name}</strong> - ${group.time}</p>
+                                       <a href="${group.link}">Join Meeting</a>`;
+                peerGroupsList.appendChild(groupItem);
+            });
+        }
+
+        loadPeerGroups(); // Load the peer group meetings on page load
+    </script>
+</body>
+</html>
