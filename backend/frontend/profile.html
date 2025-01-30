@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link your stylesheet if needed -->
+</head>
+<body>
+    <!-- Main Navigation Menu -->
+    <div class="navbar">
+        <div class="dropdown">
+            <button class="dropdown-button">Menu</button>
+            <div class="dropdown-content">
+                <a href="index.html">Home</a>
+                <a href="exercises.html">Exercises</a>
+                <a href="mood-tracker.html">Mood Tracker</a>
+                <a href="progress-tracker.html">Progress Tracker</a>
+                <a href="connect.html">Connect</a>
+                <a href="book-appointment.html">Book Appointment</a>
+                <a href="emergency-contact.html">Emergency Contacts</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="profile">
+        <h2>Your Profile</h2>
+
+        <!-- Profile Form -->
+        <form id="profileForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" value="John Doe" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="john.doe@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" value="1990-01-01" required>
+            </div>
+
+            <button type="submit">Save Changes</button>
+        </form>
+
+        <h3>Your Mental Health History</h3>
+        <div class="history">
+            <p><strong>Recent Mood Logs:</strong></p>
+            <ul id="moodHistoryList">
+                <li>Mood on 2025-01-01: 7/10 - Feeling good!</li>
+                <li>Mood on 2025-01-05: 5/10 - Feeling stressed.</li>
+                <li>Mood on 2025-01-10: 8/10 - Feeling positive!</li>
+            </ul>
+
+            <p><strong>Progress Tracker:</strong></p>
+            <ul id="progressHistoryList">
+                <li>January 2025: Achieved mindfulness goals - 80% progress</li>
+                <li>December 2024: Reduced stress levels - 70% progress</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for handling form submission (could integrate with a backend for saving data)
+        document.getElementById("profileForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const dob = document.getElementById("dob").value;
+
+            // You could send this data to the server to update the user's profile
+            console.log("Updated profile:", name, email, dob);
+
+            alert("Profile updated successfully!");
+        });
+    </script>
+</body>
+</html>

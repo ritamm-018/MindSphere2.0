@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Tracker</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js -->
+</head>
+<body>
+    <!-- Main Navigation Menu -->
+    <div class="navbar">
+        <div class="dropdown">
+            <button class="dropdown-button">Menu</button>
+            <div class="dropdown-content">
+                <a href="index.html">Home</a>
+                <a href="profile.html">Profile</a>
+                <a href="exercises.html">Exercises</a>
+                <a href="mood-tracker.html">Mood Tracker</a>
+                <a href="connect.html">Connect</a>
+                <a href="book-appointment.html">Book Appointment</a>
+                <a href="emergency-contact.html">Emergency Contacts</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Tracker Form -->
+    <div class="progress-tracker">
+        <h2>Track Your Progress</h2>
+        <form id="progressForm">
+            <label for="moodRating">Rate your mood today (1-10):</label>
+            <input type="number" id="moodRating" name="moodRating" min="1" max="10" required>
+
+            <label for="stressLevel">Rate your stress level today (1-10):</label>
+            <input type="number" id="stressLevel" name="stressLevel" min="1" max="10" required>
+
+            <label for="progressNotes">Any other notes (optional):</label>
+            <textarea id="progressNotes" name="progressNotes" rows="4" placeholder="Any thoughts or reflections..."></textarea>
+
+            <button type="submit">Submit Progress</button>
+        </form>
+
+        <div id="feedbackMessage"></div>
+    </div>
+
+    <!-- Progress History and Chart -->
+    <div class="progress-history">
+        <h3>Your Progress History</h3>
+        <div id="progressHistory"></div>
+        <canvas id="progressChart" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        // Handle progress form submission
+        const progressForm = document.getElementById('progressForm');
+        const moodRatingInput = document.getElementById('moodRating');
+        const stressLevelInput = document.getElementById('stressLevel');
+        const progressNotesInput = document.getElementById('progressNotes');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+
+        progressForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const moodRating = moodRatingInput.value;
+            const stressLevel = stressLevelInput.value;
+            const progressNotes = progressNotesInput.value;
+
+            if (!moodRating || !stressLevel || moodRating < 1 || moodRating > 10 || stressLevel < 1 || stressLevel > 10) {
+                feedbackMessage.textContent = "Please provide valid ratings between 1 and 10 for mood and stress level.";
+                return;
+            }
+
+            // Send data to backend (use your backend URL here)
+            // For now, we are simulating success
+            feedbackMessage.textContent = "Your progress has been saved!";
+            feedbackMessage.style.color = "green";
+
+            // Optionally, you can update the progress history chart or history section here.
+            // Simulating adding a new progress entry:
+            addProgressToHistory(moodRating, stressLevel, progressNotes);
+        });
+
+        // Sample progress history data (in a real app, this would come from your backend)
+        const progressHistory = [
+            { date: '2025-01-25', mood: 7, stress: 4, notes: 'Feeling okay today.' },
+            { date: '2025-01-26', mood: 6, stress: 6, notes: 'A little stressed.' },
+            { date: '2025-01-27', mood: 8, stress: 3, notes: 'Feeling good!' }
+        ];
+
+        function loadProgressHistory() {
+            const historyContainer = document.getElementById('progressHistory');
+            historyContainer.innerHTML = '';
+
+            if (progressHistory.length === 0) {
+                historyContainer.innerHTML = "No progress history available.";
+            } else {
+                progressHistory.forEach(entry => {
+                    const entryDiv = document.createElement('div');
+                    entryDiv.classList.add('progress-entry');
+                    entryDiv.innerHTML = `<p>${entry.date}: Mood: ${entry.mood}/10, Stress: ${entry.stress}/10</p><p>Notes: ${entry.notes}</p>`;
+                    historyContainer.appendChild(entryDiv);
+                });
+
+                // Update the chart
+                updateProgressChart();
+            }
+        }
+
+        function addProgressToHistory(mood, stress, notes) {
+            const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+            progressHistory.push({ date: currentDate, mood: parseInt(mood), stress: parseInt(stress), notes: notes });
+            loadProgressHistory(); // Refresh history display
+        }
+
+        // Function to update progress chart (using Chart.js)
+        let progressChart = null;
+
+        function updateProgressChart() {
+            const ctx = document.getElementById('progressChart').getContext('2d');
+
+            const dates = progressHistory.map(entry => entry.date);
+            const moods = progressHistory.map(entry => entry.mood);
+            const stressLevels = progressHistory.map(entry => entry.stress);
+
+            if (progressChart) {
+                progressChart.destroy(); // Destroy the previous chart before creating a new one
+            }
+
+            progressChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [
+                        {
+                            label: 'Mood Progress',
+                            data: moods,
+                            borderColor: '#c20303',
+                            fill: false,
+                        },
+                        {
+                            label: 'Stress Level Progress',
+                            data: stressLevels,
+                            borderColor: '#008080',
+                            fill: false,
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        x: { title: { display: true, text: 'Date' } },
+                        y: { title: { display: true, text: 'Rating' }, min: 1, max: 10 },
+                    }
+                }
+            });
+        }
+
+        loadProgressHistory(); // Load progress history when the page loads
+    </script>
+</body>
+</html>
