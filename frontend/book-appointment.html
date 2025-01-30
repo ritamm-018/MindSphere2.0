@@ -5,168 +5,281 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book Appointment - Mindsphere</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: 'Arial', sans-serif;
+    }
+
+    :root {
+      --primary-color: #C5D3E8;
+      --secondary-color: #D0E8C5;
+      --text-color: #4B5563;
+      --sidebar-width: 250px;
     }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #000000, #c00101);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      background-color: #f5f5f5;
       margin: 0;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+      padding-top: 80px;
     }
 
-    .navbar {
-      position: absolute;
-      top: 10px;
-      width: 100%;
+    .header {
+      background-color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       display: flex;
       justify-content: space-between;
-      padding: 10px 20px;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
     }
 
-    .dropdown {
-      position: relative;
-    }
-
-    .dropdown-button {
-      background-color: #c20303;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 16px;
-      border: none;
-      transition: background-color 0.3s;
-    }
-
-    .dropdown-button:hover {
-      background-color: #a00101;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #333;
-      min-width: 200px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      border-radius: 10px;
-      z-index: 1;
-      flex-direction: column;
-    }
-
-    .dropdown:hover .dropdown-content {
+    .logo-container {
       display: flex;
+      align-items: center;
+      gap: 1rem;
     }
 
-    .dropdown-content a {
-      padding: 12px 16px;
-      color: white;
+    .logo {
+      font-size: 24px;
+      color: var(--text-color);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
       text-decoration: none;
-      display: block;
+      color: var(--text-color);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
       transition: background-color 0.3s;
-      border-radius: 10px;
     }
 
-    .dropdown-content a:hover {
-      background-color: #444;
+    .nav-links a:hover {
+      background-color: var(--primary-color);
+    }
+
+    .sidebar-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 70px;
+      height: calc(100vh - 70px);
+      width: var(--sidebar-width);
+      background-color: white;
+      padding: 2rem 1rem;
+      box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .sidebar-links a {
+      text-decoration: none;
+      color: var(--text-color);
+      padding: 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .sidebar-links a:hover {
+      background-color: var(--primary-color);
     }
 
     .appointment-container {
       width: 100%;
-      max-width: 600px;
-      background-color: #a59696;
+      max-width: 750px; /* Increased width */
+      background: #333(255, 255, 255, 0.9);
       border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      padding: 25px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      padding: 35px; /* Increased padding */
+      box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      backdrop-filter: blur(10px);
+      margin-top: 100px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     h2 {
-      text-align: center;
-      color: #fff;
-      font-weight: 500;
+      color: #333;
+      font-weight: 600;
       margin-bottom: 20px;
+      font-size: 2rem; /* Increased font size */
     }
 
     .appointment-form {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 15px; /* Increased gap */
     }
 
-    input[type="date"],
-    input[type="time"] {
-      padding: 12px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+    label {
+      text-align: left;
+      font-size: 14px;
+      color: var(--text-color);
+      font-weight: 500;
     }
 
+    input,
     select {
-      padding: 12px;
+      padding: 14px;
       font-size: 16px;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      border: none;
+      background: #E8F9FF;
+      color: black;
+      transition: background-color 0.3s;
+    }
+
+    input:focus,
+    select:focus {
+      background-color: #C4D9FF;
+      outline: none;
     }
 
     button {
-      background-color: #c20303;
-      color: white;
+      background: linear-gradient(to right, #C5BAFF, #C4D9FF);
+      color: black;
       border: none;
-      padding: 18px 25px;
+      padding: 18px;
       font-size: 16px;
       border-radius: 30px;
       cursor: pointer;
       transition: all 0.3s ease-in-out;
-    }
-
-    button:hover {
-      background-color: #a00101;
-    }
-
-    .feedback-message {
-      margin-top: 20px;
       font-weight: bold;
     }
 
+    button:hover {
+      background: linear-gradient(to right, #C4D9FF, #E8F9FF);
+      transform: scale(1.05);
+    }
+
+    .feedback-message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      body {
+        padding-top: 70px;
+      }
+
+      .appointment-container {
+        width: 95%;
+        max-width: 650px;
+        padding: 30px;
+        margin-top: 90px;
+      }
+
+      h2 {
+        font-size: 1.6rem;
+      }
+
+      input,
+      select {
+        padding: 12px;
+        font-size: 15px;
+      }
+
+      button {
+        padding: 15px;
+        font-size: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .appointment-container {
+        width: 95%;
+        max-width: 500px;
+        padding: 25px;
+        margin-top: 80px;
+      }
+
+      h2 {
+        font-size: 1.4rem;
+      }
+
+      input,
+      select {
+        font-size: 14px;
+      }
+
+      button {
+        padding: 14px;
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 
 <body>
-
-  <!-- Navbar -->
-  <div class="navbar">
-    <div class="dropdown">
-      <button class="dropdown-button">Menu</button>
-      <div class="dropdown-content">
-        <a href="#">Home</a>
-        <a href="#">Exercises</a>
-        <a href="#">Mood Tracker</a>
-        <a href="#">Progress</a>
-        <a href="#">Connect</a>
-      </div>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-container">
+        <i class="fas fa-bars sidebar-toggle"></i>
+        <div class="logo">
+            <i class="fas fa-brain"></i> Mindsphere
+        </div>
     </div>
-    <div>
-      <button>Book Appointment</button>
-      <button>Emergency Contact</button>
-      <button>Profile</button>
-    </div>
-  </div>
+    <nav class="nav-links">
+        <a href="book-appointment.html"><i class="fas fa-calendar-alt"></i> Book Appointment</a>
+        <a href="emergency-contact.html"><i class="fas fa-exclamation-triangle"></i> Emergency</a>
+        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+    </nav>
+</header>
 
-  <!-- Appointment Booking Container -->
-  <div class="appointment-container">
+<!-- Sidebar -->
+<aside class="sidebar">
+    <nav class="sidebar-links">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="exercises.html"><i class="fas fa-dumbbell"></i> Exercises</a>
+        <a href="mood-tracker.html"><i class="fas fa-smile"></i> Mood Tracker</a>
+        <a href="progress-tracker.html"><i class="fas fa-chart-line"></i> Progress Tracker</a>
+        <a href="connect.html"><i class="fa-solid fa-user-group"></i> Connect</a>
+        <a href="about-us.html"><i class="fas fa-info-circle"></i> About Us</a>
+    </nav>
+</aside>
+
+<!-- Appointment Booking Container -->
+<div class="appointment-container">
     <h2>Book Your Appointment</h2>
     <form class="appointment-form" id="appointmentForm">
       <label for="doctor">Choose a Therapist:</label>
@@ -186,56 +299,19 @@
     </form>
 
     <div id="feedbackMessage" class="feedback-message"></div>
-  </div>
+</div>
 
-  <script>
-    const appointmentForm = document.getElementById('appointmentForm');
-    const feedbackMessage = document.getElementById('feedbackMessage');
+<script>
+  const appointmentForm = document.getElementById('appointmentForm');
+  const feedbackMessage = document.getElementById('feedbackMessage');
 
-    appointmentForm.addEventListener('submit', async function (e) {
-      e.preventDefault();
+  appointmentForm.addEventListener('submit', function (event) {
+    event.preventDefault();
 
-      const doctor = document.getElementById('doctor').value;
-      const appointmentDate = document.getElementById('appointmentDate').value;
-      const appointmentTime = document.getElementById('appointmentTime').value;
-
-      if (!doctor || !appointmentDate || !appointmentTime) {
-        feedbackMessage.textContent = 'Please fill in all fields.';
-        feedbackMessage.style.color = 'red';
-        return;
-      }
-
-      const appointmentData = {
-        doctor: doctor,
-        appointmentDate: appointmentDate,
-        appointmentTime: appointmentTime
-      };
-
-      // Send the appointment data to the backend (Flask API)
-      try {
-        const response = await fetch("http://127.0.0.1:5000/book-appointment", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(appointmentData)
-        });
-
-        if (response.ok) {
-          feedbackMessage.textContent = 'Your appointment has been booked successfully!';
-          feedbackMessage.style.color = 'green';
-        } else {
-          feedbackMessage.textContent = 'Sorry, something went wrong. Please try again.';
-          feedbackMessage.style.color = 'red';
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        feedbackMessage.textContent = 'An error occurred. Please try again.';
-        feedbackMessage.style.color = 'red';
-      }
-    });
-  </script>
+    feedbackMessage.textContent = 'Appointment booked successfully!';
+    feedbackMessage.style.color = 'green';
+  });
+</script>
 
 </body>
-
 </html>

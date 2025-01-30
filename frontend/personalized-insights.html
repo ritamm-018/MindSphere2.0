@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personalized Insights</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #000000, #c00101);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    .chart-container {
+      margin-top: 20px;
+    }
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      background: #c20303;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Personalized Insights</h1>
+    <p>View AI-driven insights about your mental health journey.</p>
+    
+    <div class="chart-container">
+      <canvas id="moodChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+      <canvas id="stressChart"></canvas>
+    </div>
+
+    <a href="progress-tracker.html" class="back-button">Back to Progress Tracker</a>
+  </div>
+
+  <script>
+    const moodCtx = document.getElementById('moodChart').getContext('2d');
+    const moodChart = new Chart(moodCtx, {
+      type: 'line',
+      data: {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        datasets: [{
+          label: 'Mood Score',
+          data: [3, 4, 5, 4],
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderWidth: 2,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 5
+          }
+        }
+      }
+    });
+
+    const stressCtx = document.getElementById('stressChart').getContext('2d');
+    const stressChart = new Chart(stressCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        datasets: [{
+          label: 'Stress Levels',
+          data: [4, 3, 2, 3],
+          backgroundColor: ['#ff6384', '#ff9f40', '#ffcd56', '#4bc0c0'],
+          borderColor: '#fff',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 5
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

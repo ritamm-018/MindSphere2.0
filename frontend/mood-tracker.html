@@ -1,146 +1,371 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mood Tracker</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link your stylesheet if needed -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js for charts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #FBFBFB, #E8F9FF);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #E8F9FF;
+            /* Light Blue */
+            padding: 25px;
+            border-radius: 15px;
+            height: 500px;
+            width: 750px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 15px;
+            color: #5D3FD3;
+            /* Deep purple for contrast */
+            font-size: 22px;
+        }
+
+        .modal-content input,
+        .modal-content textarea {
+            width: 100%;
+            height: 15%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #C5BAFF;
+            /* Lavender */
+            background-color: #FBFBFB;
+            /* White */
+            font-size: 16px;
+            color: #333;
+        }
+
+        .modal-content textarea {
+            height: 50%;
+            resize: none;
+        }
+
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .modal-buttons button {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .save-btn {
+            background-color: #5D3FD3;
+            /* Deep purple */
+            color: white;
+        }
+
+        .save-btn:hover {
+            background-color: #C4D9FF;
+            /* Soft blue */
+            color: black;
+        }
+
+        .cancel-btn {
+            background-color: #ccc;
+            color: black;
+        }
+
+        .cancel-btn:hover {
+            background-color: #C5BAFF;
+            /* Lavender */
+            color: black;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Navbar Styles */
+        .header {
+            background-color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: #4B5563;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4B5563;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: #C5BAFF;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 70px;
+            height: calc(100vh - 70px);
+            width: 250px;
+            background-color: white;
+            padding: 2rem 1rem;
+            box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sidebar-links a {
+            text-decoration: none;
+            color: #4B5563;
+            padding: 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sidebar-links a:hover {
+            background-color: #C5BAFF;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            margin-top: 70px;
+            padding: 2rem;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+        }
+
+        .mood-container {
+            background-color: rgba(196, 217, 255, 0.9);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .mood-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .mood-button {
+            background-color: #5D3FD3;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .mood-button:hover {
+            background-color: #C4D9FF;
+            color: black;
+        }
+
+        #logMood {
+            margin-top: 20px;
+            background-color: #5D3FD3;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        #journalBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #5D3FD3;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
 </head>
+
 <body>
-    <!-- Main Navigation Menu -->
-    <div class="navbar">
-        <div class="dropdown">
-            <button class="dropdown-button">Menu</button>
-            <div class="dropdown-content">
-                <a href="index.html">Home</a>
-                <a href="profile.html">Profile</a>
-                <a href="exercises.html">Exercises</a>
-                <a href="progress-tracker.html">Progress Tracker</a>
-                <a href="connect.html">Connect</a>
-                <a href="book-appointment.html">Book Appointment</a>
-                <a href="emergency-contact.html">Emergency Contacts</a>
+
+    <!-- Navbar -->
+    <header class="header">
+        <div class="logo-container">
+            <i class="fas fa-bars sidebar-toggle"></i>
+            <div class="logo">
+                <i class="fas fa-brain"></i> Mindsphere
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a href="book-appointment.html"><i class="fas fa-calendar-alt"></i> Book Appointment</a>
+            <a href="emergency-contact.html"><i class="fas fa-exclamation-triangle"></i> Emergency</a>
+            <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+        </nav>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <nav class="sidebar-links">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="exercises.html"><i class="fas fa-dumbbell"></i> Exercises</a>
+            <a href="mood-tracker.html"><i class="fas fa-smile"></i> Mood Tracker</a>
+            <a href="progress-tracker.html"><i class="fas fa-chart-line"></i> Progress Tracker</a>
+            <a href="connect.html"><i class="fa-solid fa-user-group"></i> Connect</a>
+            <a href="about-us.html"><i class="fas fa-info-circle"></i> About Us</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="mood-container">
+            <h2>Track Your Mood</h2>
+            <div class="mood-buttons">
+                <button class="mood-button" data-mood="Sad">😢 Sad</button>
+                <button class="mood-button" data-mood="Happy">😊 Happy</button>
+                <button class="mood-button" data-mood="Angry">😡 Angry</button>
+                <button class="mood-button" data-mood="Anxious">😟 Anxious</button>
+                <button class="mood-button" data-mood="Scared">😨 Scared</button>
+                <button class="mood-button" data-mood="Depressed">😞 Depressed</button>
+            </div>
+            <button id="logMood">Log Emotions</button>
+        </div>
+    </main>
+
+    <button id="journalBtn">Journal →</button>
+    <div class="modal" id="journalModal">
+        <div class="modal-content">
+            <h2>New Journal Entry</h2>
+            <input type="text" id="journalTitle" placeholder="Title">
+            <textarea id="journalDescription" rows="5" placeholder="Write your thoughts..."></textarea>
+            <div class="modal-buttons">
+                <button class="cancel-btn" id="closeModal">Cancel</button>
+                <button class="save-btn" id="saveJournal">Save</button>
             </div>
         </div>
     </div>
 
-    <!-- Mood Tracker Form -->
-    <div class="mood-tracker">
-        <h2>Track Your Mood</h2>
-        <form id="moodForm">
-            <label for="moodRating">Rate your mood today (1-10):</label>
-            <input type="number" id="moodRating" name="moodRating" min="1" max="10" required>
-
-            <label for="moodNotes">Notes (optional):</label>
-            <textarea id="moodNotes" name="moodNotes" rows="4" placeholder="Write something about your mood..."></textarea>
-
-            <button type="submit">Submit Mood</button>
-        </form>
-
-        <div id="feedbackMessage"></div>
-    </div>
-
-    <!-- Mood History and Chart -->
-    <div class="mood-history">
-        <h3>Your Mood History</h3>
-        <div id="moodHistory"></div>
-        <canvas id="moodChart" width="400" height="200"></canvas>
-    </div>
-
     <script>
-        // Handle mood form submission
-        const moodForm = document.getElementById('moodForm');
-        const moodRatingInput = document.getElementById('moodRating');
-        const moodNotesInput = document.getElementById('moodNotes');
-        const feedbackMessage = document.getElementById('feedbackMessage');
-
-        moodForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const moodRating = moodRatingInput.value;
-            const moodNotes = moodNotesInput.value;
-
-            if (!moodRating || moodRating < 1 || moodRating > 10) {
-                feedbackMessage.textContent = "Please provide a mood rating between 1 and 10.";
-                return;
-            }
-
-            // Send data to backend (use your backend URL here)
-            // For now, we are simulating success
-            feedbackMessage.textContent = "Your mood has been saved!";
-            feedbackMessage.style.color = "green";
-
-            // Optionally, you can update the mood history chart or history section here.
-            // Simulating adding a new mood entry:
-            addMoodToHistory(moodRating, moodNotes);
+        // Toggle Sidebar
+        document.querySelector('.sidebar-toggle').addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.toggle('active');
         });
 
-        // Sample mood history data (in a real app, this would come from your backend)
-        const moodHistory = [
-            { date: '2025-01-25', mood: 7, notes: 'Feeling okay today.' },
-            { date: '2025-01-26', mood: 6, notes: 'A little stressed.' },
-            { date: '2025-01-27', mood: 8, notes: 'Feeling positive!' }
-        ];
+        let selectedMood = "";
 
-        function loadMoodHistory() {
-            const historyContainer = document.getElementById('moodHistory');
-            historyContainer.innerHTML = '';
-
-            if (moodHistory.length === 0) {
-                historyContainer.innerHTML = "No mood history available.";
-            } else {
-                moodHistory.forEach(entry => {
-                    const entryDiv = document.createElement('div');
-                    entryDiv.classList.add('mood-entry');
-                    entryDiv.innerHTML = `<p>${entry.date}: Mood: ${entry.mood}/10</p><p>Notes: ${entry.notes}</p>`;
-                    historyContainer.appendChild(entryDiv);
-                });
-
-                // Update the chart
-                updateMoodChart();
-            }
-        }
-
-        function addMoodToHistory(mood, notes) {
-            const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
-            moodHistory.push({ date: currentDate, mood: parseInt(mood), notes: notes });
-            loadMoodHistory(); // Refresh history display
-        }
-
-        // Function to update mood chart (using Chart.js)
-        let moodChart = null;
-
-        function updateMoodChart() {
-            const ctx = document.getElementById('moodChart').getContext('2d');
-
-            const dates = moodHistory.map(entry => entry.date);
-            const moods = moodHistory.map(entry => entry.mood);
-
-            if (moodChart) {
-                moodChart.destroy(); // Destroy the previous chart before creating a new one
-            }
-
-            moodChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: dates,
-                    datasets: [{
-                        label: 'Mood Progress',
-                        data: moods,
-                        borderColor: '#c20303',
-                        fill: false,
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: { title: { display: true, text: 'Date' } },
-                        y: { title: { display: true, text: 'Mood' }, min: 1, max: 10 },
-                    }
-                }
+        document.querySelectorAll('.mood-button').forEach(button => {
+            button.addEventListener('click', function () {
+                selectedMood = this.getAttribute('data-mood');
+                alert(`You selected: ${selectedMood}`);
             });
-        }
+        });
 
-        loadMoodHistory(); // Load mood history when the page loads
+        document.getElementById('logMood').addEventListener('click', function () {
+            if (selectedMood) {
+                alert(`Mood logged: ${selectedMood}`);
+            } else {
+                alert("Please select a mood before logging!");
+            }
+        });
+
+        document.getElementById('journalBtn').addEventListener('click', function () {
+            document.getElementById('journalModal').style.display = 'flex';
+        });
+
+        document.getElementById('closeModal').addEventListener('click', function () {
+            document.getElementById('journalModal').style.display = 'none';
+        });
+
+
     </script>
+
 </body>
+
 </html>

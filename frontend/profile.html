@@ -4,24 +4,221 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Profile</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link your stylesheet if needed -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+    }
+    :root {
+        --primary-color: #C5D3E8;
+        --secondary-color: #D0E8C5;
+        --text-color: #4B5563;
+        --sidebar-width: 250px;
+      }
+        body {
+      background-color: #f5f5f5;
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+      padding-top: 80px;
+    }
+
+    .header {
+      background-color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 24px;
+      color: var(--text-color);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .nav-links a:hover {
+      background-color: var(--primary-color);
+    }
+
+    .sidebar-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 70px;
+      height: calc(100vh - 70px);
+      width: var(--sidebar-width);
+      background-color: white;
+      padding: 2rem 1rem;
+      box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .sidebar-links a {
+      text-decoration: none;
+      color: var(--text-color);
+      padding: 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .sidebar-links a:hover {
+      background-color: var(--primary-color);
+    }
+
+        .profile {
+            max-width: 600px;
+            margin: 100px auto 40px;
+            background: #C4D9FF;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2, h3 {
+            color: #C4D9FF;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #C5BAFF;
+            border-radius: 8px;
+            background: #FBFBFB;
+            color: #333;
+            font-size: 16px;
+        }
+
+        button {
+            background: #C5BAFF;
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background: #C4D9FF;
+        }
+
+        .history {
+            margin-top: 30px;
+            background: #E8F9FF;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .history ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .history li {
+            background: #C5BAFF;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .history li:last-child {
+            margin-bottom: 0;
+        }
+
+        .history strong {
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-    <!-- Main Navigation Menu -->
-    <div class="navbar">
-        <div class="dropdown">
-            <button class="dropdown-button">Menu</button>
-            <div class="dropdown-content">
-                <a href="index.html">Home</a>
-                <a href="exercises.html">Exercises</a>
-                <a href="mood-tracker.html">Mood Tracker</a>
-                <a href="progress-tracker.html">Progress Tracker</a>
-                <a href="connect.html">Connect</a>
-                <a href="book-appointment.html">Book Appointment</a>
-                <a href="emergency-contact.html">Emergency Contacts</a>
-            </div>
+    <!-- Header -->
+  <header class="header">
+    <div class="logo-container">
+        <i class="fas fa-bars sidebar-toggle"></i>
+        <div class="logo">
+            <i class="fas fa-brain"></i> Mindsphere
         </div>
     </div>
+    <nav class="nav-links">
+        <a href="book-appointment.html"><i class="fas fa-calendar-alt"></i> Book Appointment</a>
+        <a href="emergency-contact.html"><i class="fas fa-exclamation-triangle"></i> Emergency</a>
+        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+    </nav>
+</header>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <nav class="sidebar-links">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="exercises.html"><i class="fas fa-dumbbell"></i> Exercises</a>
+        <a href="mood-tracker.html"><i class="fas fa-smile"></i> Mood Tracker</a>
+        <a href="progress-tracker.html"><i class="fas fa-chart-line"></i> Progress Tracker</a>
+        <a href="connect.html"><i class="fa-solid fa-user-group"></i> Connect</a>
+        <a href="about-us.html"><i class="fas fa-info-circle"></i> About Us</a>
+    </nav>
+</aside>
 
     <!-- Profile Section -->
     <div class="profile">
@@ -31,12 +228,12 @@
         <form id="profileForm">
             <div class="form-group">
                 <label for="name">Name:</label>
-                <input type="text" id="name" name="name" value="John Doe" required>
+                <input type="text" id="name" name="name" value="Tony Stark" required>
             </div>
 
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="john.doe@example.com" required>
+                <input type="email" id="email" name="email" value="ultron@gmail.com" required>
             </div>
 
             <div class="form-group">

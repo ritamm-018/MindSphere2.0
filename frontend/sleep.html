@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sleep Guide - Mindsphere</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+    }
+    :root {
+        --primary-color: #C5D3E8;
+        --secondary-color: #D0E8C5;
+        --text-color: #4B5563;
+        --sidebar-width: 250px;
+      }
+        body {
+      background-color: #f5f5f5;
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+      padding-top: 80px;
+    }
+
+    .header {
+      background-color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 24px;
+      color: var(--text-color);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .nav-links a:hover {
+      background-color: var(--primary-color);
+    }
+
+    .sidebar-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 70px;
+      height: calc(100vh - 70px);
+      width: var(--sidebar-width);
+      background-color: white;
+      padding: 2rem 1rem;
+      box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .sidebar-links a {
+      text-decoration: none;
+      color: var(--text-color);
+      padding: 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .sidebar-links a:hover {
+      background-color: var(--primary-color);
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #C4D9FF;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      margin-bottom: 15px;
+    }
+
+    .sleep-tips {
+      text-align: left;
+      margin-top: 15px;
+    }
+
+    .sleep-tips li {
+      background: #C5BAFF;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 8px;
+    }
+
+    .tracker {
+      margin-top: 20px;
+    }
+
+    input {
+      width: 80%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+    }
+
+    .submit-button {
+      background: #10B981;
+      color: white;
+      padding: 10px 15px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      background: #10B981;
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+    }
+
+    .result {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-container">
+        <i class="fas fa-bars sidebar-toggle"></i>
+        <div class="logo">
+            <i class="fas fa-brain"></i> Mindsphere
+        </div>
+    </div>
+    <nav class="nav-links">
+        <a href="book-appointment.html"><i class="fas fa-calendar-alt"></i> Book Appointment</a>
+        <a href="emergency-contact.html"><i class="fas fa-exclamation-triangle"></i> Emergency</a>
+        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+    </nav>
+</header>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <nav class="sidebar-links">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="exercises.html"><i class="fas fa-dumbbell"></i> Exercises</a>
+        <a href="mood-tracker.html"><i class="fas fa-smile"></i> Mood Tracker</a>
+        <a href="progress-tracker.html"><i class="fas fa-chart-line"></i> Progress Tracker</a>
+        <a href="connect.html"><i class="fa-solid fa-user-group"></i> Connect</a>
+        <a href="about-us.html"><i class="fas fa-info-circle"></i> About Us</a>
+    </nav>
+</aside>
+  <div class="container">
+    <h1>Sleep Improvement Guide</h1>
+    <p>Quality sleep is important for mental health. Here are some tips to improve your sleep:</p>
+
+    <ul class="sleep-tips">
+      <li>🌙 Stick to a consistent sleep schedule.</li>
+      <li>📵 Avoid screens 30 minutes before bed.</li>
+      <li>🍵 Reduce caffeine intake in the evening.</li>
+      <li>🏋️‍♂️ Engage in light exercise during the day.</li>
+      <li>🧘 Practice relaxation techniques before bed.</li>
+    </ul>
+
+    <div class="tracker">
+      <h2>Track Your Sleep</h2>
+      <label for="sleepHours">How many hours did you sleep last night?</label><br>
+      <input type="number" id="sleepHours" min="0" max="12" placeholder="Enter hours..." />
+      <button class="submit-button" onclick="trackSleep()">Submit</button>
+      <p class="result" id="sleepResult"></p>
+    </div>
+
+    <a href="index.html" class="back-button">Back to Chatbot</a>
+  </div>
+
+  <script>
+    function trackSleep() {
+      let hours = document.getElementById("sleepHours").value;
+      let resultText = "";
+      
+      if (!hours || hours <= 0) {
+        resultText = "❌ Please enter a valid number!";
+      } else if (hours < 5) {
+        resultText = "⚠️ You might be sleep-deprived! Try to get more rest.";
+      } else if (hours >= 5 && hours < 8) {
+        resultText = "✅ Good, but aim for 7-9 hours for optimal health.";
+      } else {
+        resultText = "🌙 Great! You are getting enough sleep.";
+      }
+
+      document.getElementById("sleepResult").innerText = resultText;
+    }
+  </script>
+</body>
+</html>

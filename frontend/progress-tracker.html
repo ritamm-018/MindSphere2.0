@@ -1,160 +1,372 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progress Tracker</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress Tracker - Mindsphere</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    :root {
+      --primary-color: #C5D3E8;
+      --secondary-color: #D0E8C5;
+      --text-color: #4B5563;
+      --sidebar-width: 250px;
+    }
+
+    body {
+      background-color: #f5f5f5;
+      margin: 0;
+    }
+
+    /* Header Styles */
+    .header {
+      background-color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 24px;
+      color: var(--text-color);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .nav-links a:hover {
+      background-color: var(--primary-color);
+    }
+
+    /* Sidebar Styles */
+    .sidebar-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 70px;
+      height: calc(100vh - 70px);
+      width: var(--sidebar-width);
+      background-color: white;
+      padding: 2rem 1rem;
+      box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .sidebar-links a {
+      text-decoration: none;
+      color: var(--text-color);
+      padding: 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .sidebar-links a:hover {
+      background-color: var(--primary-color);
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      margin-top: 70px;
+      padding: 2rem;
+      height: calc(100vh - 70px);
+      overflow-y: auto;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #C5D3E8;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
+    }
+
+    h1 {
+      margin-bottom: 15px;
+      font-size: 2rem;
+      color: #4B5563;
+      text-align: center;
+    }
+
+    .progress-list {
+      text-align: left;
+      margin-top: 15px;
+      color: #4B5563;
+    }
+
+    .progress-list li {
+      background: #D0E8C5;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 8px;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      background: #D0E8C5;
+      color: #333;
+      text-decoration: none;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .chart-container {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar .progress {
+      height: 20px;
+      background-color: #4CAF50;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .main-content {
+        margin-left: 0;
+      }
+
+      .container {
+        margin-top: 80px;
+      }
+
+      .chart-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .chart-container canvas {
+        max-width: 90%;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Main Navigation Menu -->
-    <div class="navbar">
-        <div class="dropdown">
-            <button class="dropdown-button">Menu</button>
-            <div class="dropdown-content">
-                <a href="index.html">Home</a>
-                <a href="profile.html">Profile</a>
-                <a href="exercises.html">Exercises</a>
-                <a href="mood-tracker.html">Mood Tracker</a>
-                <a href="connect.html">Connect</a>
-                <a href="book-appointment.html">Book Appointment</a>
-                <a href="emergency-contact.html">Emergency Contacts</a>
-            </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo-container">
+      <i class="fas fa-bars sidebar-toggle"></i>
+      <div class="logo">
+        <i class="fas fa-brain"></i> Mindsphere
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="book-appointment.html"><i class="fas fa-calendar-alt"></i> Book Appointment</a>
+      <a href="emergency-contact.html"><i class="fas fa-exclamation-triangle"></i> Emergency</a>
+      <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+    </nav>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <nav class="sidebar-links">
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a href="exercises.html"><i class="fas fa-dumbbell"></i> Exercises</a>
+      <a href="mood-tracker.html"><i class="fas fa-smile"></i> Mood Tracker</a>
+      <a href="progress-tracker.html"><i class="fas fa-chart-line"></i> Progress Tracker</a>
+      <a href="connect.html"><i class="fa-solid fa-user-group"></i> Connect</a>
+      <a href="about-us.html"><i class="fas fa-info-circle"></i> About Us</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <h1>Progress Tracker</h1>
+      <p>Track your journey towards better mental health and well-being.</p>
+
+      <!-- Progress List -->
+      <ul class="progress-list">
+        <li>📅 Daily Mood Check-ins</li>
+        <li>📝 Journaling & Reflections</li>
+        <li>🎯 Goal Achievement Tracker</li>
+        <li>💡 Meditation & Relaxation Logs</li>
+        <li>📊 Personalized Insights</li>
+      </ul>
+
+      <!-- Progress Bars -->
+      <div class="chart-container">
+        <div style="flex: 1;">
+          <h3>Goal Progress</h3>
+          <div class="progress-bar">
+            <div class="progress" style="width: 80%;"></div>
+          </div>
         </div>
+        <div style="flex: 1;">
+          <h3>Daily Mood Progress</h3>
+          <div class="progress-bar">
+            <div class="progress" style="width: 65%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="chart-container">
+        <div style="flex: 1;">
+          <h3 style="text-align: center; margin-top: 40px;">Weekly Progress</h3>
+          <canvas id="weeklyProgressChart"></canvas>
+        </div>
+        <div style="flex: 1;">
+          <h3 style="text-align: center; margin-top: 40px;">Mood Trends</h3>
+          <canvas id="lineChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Pie Chart -->
+      <h3 style="text-align: center; margin-top: 40px;">Progress Overview</h3>
+      <div style="max-width: 500px; margin: 0 auto;">
+        <canvas id="moodChart"></canvas>
+      </div>
+
+      <!-- <a href="index.html" class="back-button">Back to Chatbot</a> -->
     </div>
+  </main>
 
-    <!-- Progress Tracker Form -->
-    <div class="progress-tracker">
-        <h2>Track Your Progress</h2>
-        <form id="progressForm">
-            <label for="moodRating">Rate your mood today (1-10):</label>
-            <input type="number" id="moodRating" name="moodRating" min="1" max="10" required>
-
-            <label for="stressLevel">Rate your stress level today (1-10):</label>
-            <input type="number" id="stressLevel" name="stressLevel" min="1" max="10" required>
-
-            <label for="progressNotes">Any other notes (optional):</label>
-            <textarea id="progressNotes" name="progressNotes" rows="4" placeholder="Any thoughts or reflections..."></textarea>
-
-            <button type="submit">Submit Progress</button>
-        </form>
-
-        <div id="feedbackMessage"></div>
-    </div>
-
-    <!-- Progress History and Chart -->
-    <div class="progress-history">
-        <h3>Your Progress History</h3>
-        <div id="progressHistory"></div>
-        <canvas id="progressChart" width="400" height="200"></canvas>
-    </div>
-
-    <script>
-        // Handle progress form submission
-        const progressForm = document.getElementById('progressForm');
-        const moodRatingInput = document.getElementById('moodRating');
-        const stressLevelInput = document.getElementById('stressLevel');
-        const progressNotesInput = document.getElementById('progressNotes');
-        const feedbackMessage = document.getElementById('feedbackMessage');
-
-        progressForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const moodRating = moodRatingInput.value;
-            const stressLevel = stressLevelInput.value;
-            const progressNotes = progressNotesInput.value;
-
-            if (!moodRating || !stressLevel || moodRating < 1 || moodRating > 10 || stressLevel < 1 || stressLevel > 10) {
-                feedbackMessage.textContent = "Please provide valid ratings between 1 and 10 for mood and stress level.";
-                return;
+  <script>
+    // Initialize Pie Chart
+    var ctx = document.getElementById('moodChart').getContext('2d');
+    var moodChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Happy', 'Neutral', 'Sad'],
+        datasets: [{
+          data: [30, 50, 20], // Example data
+          backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          tooltip: {
+            callbacks: {
+              label: function(tooltipItem) {
+                return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+              }
             }
+          }
+        }
+      }
+    });
 
-            // Send data to backend (use your backend URL here)
-            // For now, we are simulating success
-            feedbackMessage.textContent = "Your progress has been saved!";
-            feedbackMessage.style.color = "green";
-
-            // Optionally, you can update the progress history chart or history section here.
-            // Simulating adding a new progress entry:
-            addProgressToHistory(moodRating, stressLevel, progressNotes);
-        });
-
-        // Sample progress history data (in a real app, this would come from your backend)
-        const progressHistory = [
-            { date: '2025-01-25', mood: 7, stress: 4, notes: 'Feeling okay today.' },
-            { date: '2025-01-26', mood: 6, stress: 6, notes: 'A little stressed.' },
-            { date: '2025-01-27', mood: 8, stress: 3, notes: 'Feeling good!' }
-        ];
-
-        function loadProgressHistory() {
-            const historyContainer = document.getElementById('progressHistory');
-            historyContainer.innerHTML = '';
-
-            if (progressHistory.length === 0) {
-                historyContainer.innerHTML = "No progress history available.";
-            } else {
-                progressHistory.forEach(entry => {
-                    const entryDiv = document.createElement('div');
-                    entryDiv.classList.add('progress-entry');
-                    entryDiv.innerHTML = `<p>${entry.date}: Mood: ${entry.mood}/10, Stress: ${entry.stress}/10</p><p>Notes: ${entry.notes}</p>`;
-                    historyContainer.appendChild(entryDiv);
-                });
-
-                // Update the chart
-                updateProgressChart();
+    // Initialize Bar Chart
+    var barCtx = document.getElementById('weeklyProgressChart').getContext('2d');
+    var weeklyProgressChart = new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+          label: 'Activity Progress (%)',
+          data: [70, 80, 90, 75, 85, 90, 95], // Example data
+          backgroundColor: '#4CAF50',
+          borderColor: '#388E3C',
+          borderWidth: 1,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              max: 100
             }
+          }
         }
+      }
+    });
 
-        function addProgressToHistory(mood, stress, notes) {
-            const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
-            progressHistory.push({ date: currentDate, mood: parseInt(mood), stress: parseInt(stress), notes: notes });
-            loadProgressHistory(); // Refresh history display
-        }
-
-        // Function to update progress chart (using Chart.js)
-        let progressChart = null;
-
-        function updateProgressChart() {
-            const ctx = document.getElementById('progressChart').getContext('2d');
-
-            const dates = progressHistory.map(entry => entry.date);
-            const moods = progressHistory.map(entry => entry.mood);
-            const stressLevels = progressHistory.map(entry => entry.stress);
-
-            if (progressChart) {
-                progressChart.destroy(); // Destroy the previous chart before creating a new one
+    // Initialize Line Chart
+    var lineCtx = document.getElementById('lineChart').getContext('2d');
+    var lineChart = new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+          label: 'Mood Score Over Time',
+          data: [70, 85, 72, 77, 74, 90],
+          fill: false,
+          borderColor: '#C5BAFF',
+          tension: 0.1,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          tooltip: {
+            callbacks: {
+              label: function(tooltipItem) {
+                return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+              }
             }
-
-            progressChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: dates,
-                    datasets: [
-                        {
-                            label: 'Mood Progress',
-                            data: moods,
-                            borderColor: '#c20303',
-                            fill: false,
-                        },
-                        {
-                            label: 'Stress Level Progress',
-                            data: stressLevels,
-                            borderColor: '#008080',
-                            fill: false,
-                        }
-                    ]
-                },
-                options: {
-                    scales: {
-                        x: { title: { display: true, text: 'Date' } },
-                        y: { title: { display: true, text: 'Rating' }, min: 1, max: 10 },
-                    }
-                }
-            });
+          }
         }
-
-        loadProgressHistory(); // Load progress history when the page loads
-    </script>
+      }
+    });
+  </script>
 </body>
 </html>

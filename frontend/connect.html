@@ -3,78 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connect - Therapist & Peer Groups</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
-</head>
-<body>
-    <!-- Main Navigation Menu -->
-    <div class="navbar">
-        <div class="dropdown">
-            <button class="dropdown-button">Menu</button>
-            <div class="dropdown-content">
-                <a href="index.html">Home</a>
-                <a href="profile.html">Profile</a>
-                <a href="exercises.html">Exercises</a>
-                <a href="mood-tracker.html">Mood Tracker</a>
-                <a href="progress-tracker.html">Progress Tracker</a>
-                <a href="book-appointment.html">Book Appointment</a>
-                <a href="emergency-contact.html">Emergency Contacts</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Therapist Communication Section -->
-    <div class="therapist-chat">
-        <h2>Connect with Your Therapist</h2>
-        <p>If you need support, connect with your therapist for a chat or video call:</p>
-        <button class="chat-button">Start Chat</button>
-        <button class="video-call-button">Start Video Call</button>
-    </div>
-
-    <!-- Peer Group Communication Section -->
-    <div class="peer-group">
-        <h3>Join Peer Group Meetings</h3>
-        <p>Join a virtual peer group meeting for emotional and social support:</p>
-        <button class="join-peer-group-button">Join Peer Group</button>
-
-        <h3>Available Peer Group Meetings</h3>
-        <div id="peerGroupsList">
-            <!-- List of available peer groups will be shown here -->
-        </div>
-    </div>
-
-    <script>
-        // Handle Therapist Chat and Video Call Buttons
-        document.querySelector('.chat-button').addEventListener('click', function() {
-            alert('Starting chat with your therapist...');
-            // Implement your chat functionality here
-        });
-
-        document.querySelector('.video-call-button').addEventListener('click', function() {
-            alert('Starting video call with your therapist...');
-            // Implement your video call functionality here
-        });
-
-        // Sample data for available peer group meetings
-        const peerGroups = [
-            { name: 'Mental Health Support Group', time: '2025-01-30 18:00', link: '#' },
-            { name: 'Stress Relief Group', time: '2025-02-01 14:00', link: '#' }
-        ];
-
-        function loadPeerGroups() {
-            const peerGroupsList = document.getElementById('peerGroupsList');
-            peerGroupsList.innerHTML = ''; // Clear the list first
-
-            peerGroups.forEach(group => {
-                const groupItem = document.createElement('div');
-                groupItem.classList.add('peer-group-item');
-                groupItem.innerHTML = `<p><strong>${group.name}</strong> - ${group.time}</p>
-                                       <a href="${group.link}">Join Meeting</a>`;
-                peerGroupsList.appendChild(groupItem);
-            });
+    <title>Connect with Others</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
 
-        loadPeerGroups(); // Load the peer group meetings on page load
+        :root {
+            --primary-color: #C5D3E8;
+            --secondary-color: #D0E8C5;
+            --text-color: #4B5563;
+            --sidebar-width: 250px;
+            --accent-color: #FBFBFB;
+        }
+
+        body {
+            background-color: #FBFBFB;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--primary-color);
+        }
+
+        /* Sidebar Styles */
+        .sidebar-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 70px;
+            height: calc(100vh - 70px);
+            width: var(--sidebar-width);
+            background-color: white;
+            padding: 2rem 1rem;
+            box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sidebar-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            padding: 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sidebar-links a:hover {
+            background-color: var(--primary-color);
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: 70px;
+            padding: 2rem;
+            width: calc(100% - var(--sidebar-width));
+        }
+
+        /* Card Styles */
+        .card {
+            width: 90%;
+            max-width: 700px;
+            background: #C5D3E8;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-item {
+            flex: 0 0 100%;
+            background: #FFF8DE;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0.9;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .carousel-item:hover {
+            transform: scale(1.05);
+            opacity: 1;
+        }
+
+        /* Responsive Sidebar */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 999;
+            }
+            
+            .sidebar-links a {
+                font-size: 1rem;
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <i class="fas fa-bars sidebar-toggle"></i>
+            <div class="logo"><i class="fas fa-brain"></i> Mindsphere</div>
+        </div>
+        <nav class="nav-links">
+            <a href="book-appointment.html"><i class="fas fa-calendar-alt"></i> Book Appointment</a>
+            <a href="emergency-contact.html"><i class="fas fa-exclamation-triangle"></i> Emergency</a>
+            <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+            
+        </nav>
+    </header>
+
+    <aside class="sidebar">
+        <nav class="sidebar-links">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="exercises.html"><i class="fas fa-dumbbell"></i> Exercises</a>
+            <a href="mood-tracker.html"><i class="fas fa-smile"></i> Mood Tracker</a>
+            <a href="progress-tracker.html"><i class="fas fa-chart-line"></i> Progress Tracker</a>
+            <a href="connect.html"><i class="fas fa-user-group"></i> Connect</a>
+            <a href="about-us.html"><i class="fas fa-info-circle"></i> About Us</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="card">
+            <h2>Connect with Others</h2>
+            <div class="carousel-container">
+                <div class="carousel-track">
+                    <div class="carousel-item">Mindfulness Webinar - June 15, 2023</div>
+                    <div class="carousel-item">Local Meditation Group - Every Tuesday</div>
+                    <div class="carousel-item">Stress Management Seminar - July 1, 2023</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Sidebar toggle functionality
+        const sidebarToggle = document.querySelector('.sidebar-toggle');
+        const sidebar = document.querySelector('.sidebar');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Auto-carousel functionality
+        const carouselTrack = document.querySelector('.carousel-track');
+        const carouselItems = document.querySelectorAll('.carousel-item');
+
+        let currentIndex = 0;
+
+        function updateCarousel() {
+            carouselTrack.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        function autoCycleCarousel() {
+            currentIndex = (currentIndex + 1) % carouselItems.length;
+            updateCarousel();
+        }
+
+        // Set carousel to cycle every 3 seconds (3000 milliseconds)
+        setInterval(autoCycleCarousel, 3000);
     </script>
 </body>
 </html>
